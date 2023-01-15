@@ -9,11 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Lock, Menu } from "@mui/icons-material";
-import photoURL from "../profile.jpeg";
 import { useValue } from "../context/ContextProvider";
 import IconoUsuario from "./usuario/IconoUsuario";
-
-const usuario = { name: "test", photoURL };
 
 const NavBar = () => {
   const {
@@ -51,7 +48,7 @@ const NavBar = () => {
               color="inherit"
               startIcon={<Lock />}
               onClick={() =>
-                dispatch({ type: "ABRIR_INICIAR_SESION", payload: usuario })
+                dispatch({ type: "ABRIR_INICIAR_SESION" })
               }
             >
               Iniciar Sesion

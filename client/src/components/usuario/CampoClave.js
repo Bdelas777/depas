@@ -15,7 +15,6 @@ const CampoClave = ({ passwordRef, id='password',label='Contraseña', }) => {
     
   return (
     <TextField
-      autoFocus
       margin="normal"
       variant="standard"
       id={id}
