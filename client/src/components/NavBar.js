@@ -51,7 +51,7 @@ const NavBar = () => {
               color="inherit"
               startIcon={<Lock />}
               onClick={() =>
-                dispatch({ type: "USUARIO_ACTUALIZADO", payload: usuario })
+                dispatch({ type: "ABRIR_INICIAR_SESION", payload: usuario })
               }
             >
               Iniciar Sesion
