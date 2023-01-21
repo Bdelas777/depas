@@ -18,6 +18,12 @@ export const useValue = () => {
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      dispatch({ type: 'USUARIO_ACTUALIZADO', payload: currentUser });
+    }
+  }, []);
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
   );

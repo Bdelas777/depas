@@ -19,6 +19,7 @@ const GoogleLogin = () => {
     });
     dispatch({ type: 'CERRAR_INICIAR_SESION' });
   };
+  
   const handleGoogleLogin = () => {
     setDisabled(true);
     try {
