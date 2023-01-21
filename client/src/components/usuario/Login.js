@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { useValue } from "../../context/ContextProvider";
 import CampoClave from "./CampoClave";
 import GoogleLogin from "./GoogleLogin";
+import {  login, register } from '../../actions/user';
 const Login = () => {
   const {
     state: { openLogin },
@@ -35,8 +36,9 @@ const Login = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     // Mandamos una respuesta sino esta registrada se retorna
-    const name = nameRef.current.value;
-    const confirmPassword = confirmPasswordRef.current.value;
+    if (!estaRegistrado) return login({ email, password }, dispatch);
+    const name = nombreRef.current.value;
+    const confirmPassword =  confirmpassRef.current.value;
     if (password !== confirmPassword)
     return dispatch({
       type: 'ACTUALIZA_ALERTA"',
@@ -47,7 +49,7 @@ const Login = () => {
       },
     });
     // Mandamos un registro
-  //register({ name, email, password }, dispatch);
+    register({ name, email, password }, dispatch);
   };
 
   useEffect(() => {

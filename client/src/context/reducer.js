@@ -3,7 +3,7 @@ const reducer = (state, action) => {
     case "USUARIO_ACTUALIZADO":
       localStorage.setItem('currentUser', JSON.stringify(action.payload));
       return { ...state, currentUser: action.payload };
-
+//Login
     case "ABRIR_INICIAR_SESION":
       return { ...state, openLogin: true };
       
@@ -12,7 +12,7 @@ const reducer = (state, action) => {
 
     case "ACTUALIZA_ALERTA":
       return { ...state,  alert: action.payload };
-
+//loading
     case "INICIA_CARGAR":
       return { ...state, cargando: true };
       
