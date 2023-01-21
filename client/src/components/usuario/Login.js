@@ -32,26 +32,22 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //probando cargando
-    dispatch({ type: 'INICIA_CARGAR' });
-
-    setTimeout(() => {
-      dispatch({ type: 'TERMINA_CARGAR' });
-    }, 6000);
-
-    //probando notificaciones
+    const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const confirmPassword = confirmpassRef.current.value;
-    if (password !== confirmPassword) {
-      dispatch({
-        type: "ACTUALIZA_ALERTA",
-        payload: {
-          open: true,
-          severity: "error",
-          message: "Las claves no coinciden",
-        },
-      });
-    }
+    // Mandamos una respuesta sino esta registrada se retorna
+    const name = nameRef.current.value;
+    const confirmPassword = confirmPasswordRef.current.value;
+    if (password !== confirmPassword)
+    return dispatch({
+      type: 'ACTUALIZA_ALERTA"',
+      payload: {
+        open: true,
+        severity: 'error',
+        message: 'Las contraseñas no coinciden',
+      },
+    });
+    // Mandamos un registro
+  //register({ name, email, password }, dispatch);
   };
 
   useEffect(() => {
