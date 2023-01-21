@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import reducer from './reducer';
 
 const initialState = {
@@ -13,6 +13,8 @@ const Context = createContext(initialState);
 export const useValue = () => {
   return useContext(Context);
 };
+
+
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
