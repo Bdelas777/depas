@@ -7,6 +7,8 @@ const initialState = {
   cargando: false,
   alert: { open: false, severity: 'info', message: '' },
   perfil: { open: false, file:null, photoURL:'' },
+  imagenes: [],
+  detalles: { titulo: '', descripcion: '',precio:0},
 };
 
 const Context = createContext(initialState);

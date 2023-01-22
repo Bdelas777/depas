@@ -26,6 +26,18 @@ const reducer = (state, action) => {
     case "TERMINA_CARGAR":
       return { ...state, cargando: false };
 
+    //Imagenes
+    case "ACTUALIZA_IMAGENES":
+      return { ...state, imagenes: [...state.imagenes, action.payload] };
+
+      case "BORRA_IMAGENES":
+        return { ...state, imagenes: state.imagenes.filter((imagen) => imagen !== action.payload),};
+    //Detalles de cuartos
+    case "ACTUALIZA_DETALLES":
+      return { ...state, detalles: { ...state.detalles, ...action.payload } };
+
+
+
     // Opcion invalida
     default:
       throw new Error("No hubo acciones seleccionadas");
