@@ -58,7 +58,7 @@ const AgregaDetalles = () => {
               variant="standard"
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
+                  <InputAdornment position="starts">$</InputAdornment>
                 ),
               }}
               inputProps={{ type: 'number', min: 1, max: 12000 }}

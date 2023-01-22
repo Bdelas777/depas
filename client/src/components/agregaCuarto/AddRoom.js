@@ -15,7 +15,7 @@ import { useValue } from '../../context/ContextProvider';
 
 const AddRoom = () => {
   const {
-    state: { imagenes,detalles },
+    state: { imagenes,detalles, locacion },
   } = useValue();
   const [activaPasos, setActivaPasos] = useState(0);
   const [pasos, setPasos] = useState([
@@ -59,6 +59,14 @@ const AddRoom = () => {
       if (pasos[1].completed) setComplete(1, false);
     }
   }, [detalles]);
+  
+  useEffect(() => {
+    if (locacion.lng || locacion.ltd ) {
+      if (!pasos[0].completed) setComplete(0, true);
+    } else {
+      if (pasos[0].completed) setComplete(0, false);
+    }
+  }, [locacion]);
   
   const setComplete = (index, status) => {
     setPasos((pasos) => {

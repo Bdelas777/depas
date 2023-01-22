@@ -30,13 +30,19 @@ const reducer = (state, action) => {
     case "ACTUALIZA_IMAGENES":
       return { ...state, imagenes: [...state.imagenes, action.payload] };
 
-      case "BORRA_IMAGENES":
-        return { ...state, imagenes: state.imagenes.filter((imagen) => imagen !== action.payload),};
+    case "BORRA_IMAGENES":
+      return {
+        ...state,
+        imagenes: state.imagenes.filter((imagen) => imagen !== action.payload),
+      };
+
     //Detalles de cuartos
     case "ACTUALIZA_DETALLES":
       return { ...state, detalles: { ...state.detalles, ...action.payload } };
 
-
+    //Mapa
+    case "ACTUALIZA_LOCACION":
+      return { ...state, locacion: action.payload };
 
     // Opcion invalida
     default:
