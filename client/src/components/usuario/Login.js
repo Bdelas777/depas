@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { useValue } from "../../context/ContextProvider";
 import CampoClave from "./CampoClave";
 import GoogleLogin from "./GoogleLogin";
-import {  login, register } from '../../actions/user';
+import { login, register } from "../../actions/user";
 const Login = () => {
   const {
     state: { openLogin },
@@ -38,16 +38,16 @@ const Login = () => {
     // Mandamos una respuesta sino esta registrada se retorna
     if (!estaRegistrado) return login({ email, password }, dispatch);
     const name = nombreRef.current.value;
-    const confirmPassword =  confirmpassRef.current.value;
+    const confirmPassword = confirmpassRef.current.value;
     if (password !== confirmPassword)
-    return dispatch({
-      type: 'ACTUALIZA_ALERTA"',
-      payload: {
-        open: true,
-        severity: 'error',
-        message: 'Las contraseñas no coinciden',
-      },
-    });
+      return dispatch({
+        type: "ACTUALIZA_ALERTA",
+        payload: {
+          open: true,
+          severity: "error",
+          message: "Las contraseñas no coinciden",
+        },
+      });
     // Mandamos un registro
     register({ name, email, password }, dispatch);
   };
@@ -111,8 +111,8 @@ const Login = () => {
               label="Confirma tu contraseña"
             />
           )}
-        </DialogContent >
-        <DialogActions sx={{ px: '19px' }}>
+        </DialogContent>
+        <DialogActions sx={{ px: "19px" }}>
           <Button type="submit" variant="contained" endIcon={<Send />}>
             Enviar
           </Button>

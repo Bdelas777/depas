@@ -1,5 +1,8 @@
 
 import fetchData from './utils/fetchData';
+import { v4 as uuidv4 } from 'uuid';
+import { updateProfile } from "../../actions/user";
+import uploadFile from '../firebase/uploadFile';
 
 const url = process.env.REACT_APP_SERVER_URL + '/user';
 
@@ -32,6 +35,60 @@ export const login = async (user, dispatch) => {
   if (result) {
     dispatch({ type: 'USUARIO_ACTUALIZADO', payload: result });
     dispatch({ type: 'CERRAR_INICIAR_SESION' });
+  }
+
+  dispatch({ type: 'TERMINA_CARGAR' });
+};
+
+export const updateProfile = async (currentUser, updatedFields, dispatch) => {
+  dispatch({ type: 'INICIA_CARGAR' });
+
+  const { name, file } = updatedFields;
+  let body = { name };
+  try {
+    if (file) {
+      const imageName = uuidv4() + '.' + file?.name?.split('.')?.pop();
+      // Usamos firebase para subir los archivos
+      const photoURL = await uploadFile(
+        file,
+        `perfil/${currentUser?.id}/${imageName}`
+      );
+      body = { ...body, photoURL };
+    }
+    const result = await fetchData(
+      {
+        url: url + '/updateProfile',
+        method: 'PATCH',
+        body,
+        token: currentUser.token,
+      },
+      dispatch
+    );
+    if (result) {
+      dispatch({ type: 'USUARIO_ACTUALIZADO', payload: { ...currentUser, ...result } });
+      dispatch({
+        type: 'ACTUALIZA_ALERTA',
+        payload: {
+          open: true,
+          severity: 'success',
+          message: 'Tu perfil se ha actualizado exitosamente',
+        },
+      });
+      dispatch({
+        type: 'ACTUALIZA_PERFIL',
+        payload: { open: false, file: null, photoURL: result.photoURL },
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: 'ACTUALIZA_ALERTA',
+      payload: {
+        open: true,
+        severity: 'error',
+        message: error.message,
+      },
+    });
+    console.log(error);
   }
 
   dispatch({ type: 'TERMINA_CARGAR' });

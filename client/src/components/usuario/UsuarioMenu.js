@@ -1,8 +1,9 @@
-import { Logout, Settings } from '@mui/icons-material';
-import { ListItemIcon, Menu, MenuItem } from '@mui/material';
-import React from 'react';
-import { useValue } from '../../context/ContextProvider';
-import useCheckToken from '../../hooks/useCheckToken';
+import { Logout, Settings } from "@mui/icons-material";
+import { ListItemIcon, Menu, MenuItem } from "@mui/material";
+import React from "react";
+import { useValue } from "../../context/ContextProvider";
+import useCheckToken from "../../hooks/useCheckToken";
+import Perfil from "./Perfil";
 
 const UsuarioMenu = ({ anchorUsuarioMenu, setAnchorUsuarioMenu }) => {
   useCheckToken();
@@ -14,42 +15,26 @@ const UsuarioMenu = ({ anchorUsuarioMenu, setAnchorUsuarioMenu }) => {
     setAnchorUsuarioMenu(null);
   };
 
-  const testAuthorization = async () => {
-    const url = process.env.REACT_APP_SERVER_URL + '/room';
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${currentUser.token}t`,
-        },
-      });
-
-      const data = await response.json();
-
-      console.log(data);
-      if (!data.success) {
-        if (response.status === 401)
-          dispatch({ type: 'USUARIO_ACTUALIZAD', payload: null });
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      dispatch({
-        type: 'ACTUALIZA_ALERTA',
-        payload: { open: true, severity: 'error', message: error.message },
-      });
-      console.log(error);
-    }
-  };
-
   return (
+    <>
     <Menu
       anchorEl={anchorUsuarioMenu}
       open={Boolean(anchorUsuarioMenu)}
       onClose={handleCloseUsuarioMenu}
       onClick={handleCloseUsuarioMenu}
     >
-      <MenuItem onClick={testAuthorization}>
+      <MenuItem
+        onClick={() =>
+          dispatch({
+            type: "ACTUALIZA_PERFIL",
+            payload: {
+              open: true,
+              file: null,
+              photoURL: currentUser?.photoURL,
+            },
+          })
+        }
+      >
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>
@@ -64,6 +49,8 @@ const UsuarioMenu = ({ anchorUsuarioMenu, setAnchorUsuarioMenu }) => {
         Cerrar Sesion
       </MenuItem>
     </Menu>
+    <Perfil />
+    </>
   );
 };
 

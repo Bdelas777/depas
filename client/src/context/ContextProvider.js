@@ -6,6 +6,7 @@ const initialState = {
   openLogin: false,
   cargando: false,
   alert: { open: false, severity: 'info', message: '' },
+  perfil: { open: false, file:null, photoURL:'' },
 };
 
 const Context = createContext(initialState);
@@ -13,8 +14,6 @@ const Context = createContext(initialState);
 export const useValue = () => {
   return useContext(Context);
 };
-
-
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
