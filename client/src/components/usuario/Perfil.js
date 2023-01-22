@@ -45,12 +45,11 @@ const Perfil = () => {
     e.preventDefault();
     const name = nombreRef.current.value;
     // Pasa nombre de usuario y foto en una acción
-    updateProfile(currentUser, { name, file: profile.file }, dispatch);
-
+    updateProfile(currentUser, { name, file: perfil.file }, dispatch);
   };
 
   return (
-    <Dialog open={perfil.open}  onClose={handleClose}>
+    <Dialog open={perfil.open} onClose={handleClose}>
       <DialogTitle>
         Perfil
         <IconButton

@@ -23,23 +23,26 @@ const UsuarioMenu = ({ anchorUsuarioMenu, setAnchorUsuarioMenu }) => {
       onClose={handleCloseUsuarioMenu}
       onClick={handleCloseUsuarioMenu}
     >
-      <MenuItem
-        onClick={() =>
-          dispatch({
-            type: "ACTUALIZA_PERFIL",
-            payload: {
-              open: true,
-              file: null,
-              photoURL: currentUser?.photoURL,
-            },
-          })
-        }
-      >
-        <ListItemIcon>
-          <Settings fontSize="small" />
-        </ListItemIcon>
-        Perfil
-      </MenuItem>
+      {!currentUser.google &&
+         <MenuItem
+         onClick={() =>
+           dispatch({
+             type: "ACTUALIZA_PERFIL",
+             payload: {
+               open: true,
+               file: null,
+               photoURL: currentUser?.photoURL,
+             },
+           })
+         }
+       >
+         <ListItemIcon>
+           <Settings fontSize="small" />
+         </ListItemIcon>
+         Perfil
+       </MenuItem>
+      }
+     
       <MenuItem
         onClick={() => dispatch({ type: "USUARIO_ACTUALIZADO", payload: null })}
       >

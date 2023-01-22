@@ -4,7 +4,7 @@ import NavBar from './components/NavBar'
 import Notificaciones from './components/Notificaciones'
 import Login from './components/usuario/Login'
 import Cargando from './components/Cargando'
-
+import BotonNav from './components/BotonNav'
 function App() {
   return (
     <>
@@ -12,6 +12,7 @@ function App() {
     <Notificaciones />
     <Login />
     <NavBar />
+    <BotonNav />
     </>
   )
 }

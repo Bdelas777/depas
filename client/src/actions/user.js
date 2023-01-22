@@ -1,7 +1,6 @@
 
 import fetchData from './utils/fetchData';
 import { v4 as uuidv4 } from 'uuid';
-import { updateProfile } from "../../actions/user";
 import uploadFile from '../firebase/uploadFile';
 
 const url = process.env.REACT_APP_SERVER_URL + '/user';
