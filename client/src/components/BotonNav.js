@@ -9,7 +9,7 @@ import {
   import ClusterMap from './mapa/ClusterMap';
   import Rooms from './cuartos/Rooms';
   import AddRoom from './agregaCuarto/AddRoom';
-  
+  import Protegido from './protegido/Protegido';
   const BotonNav = () => {
     const [value, setValue] = useState(0);
     const ref = useRef();
@@ -22,7 +22,7 @@ import {
           {
             0: <ClusterMap />,
             1: <Rooms />,
-            2: <AddRoom />,
+            2: <Protegido> <AddRoom setPage={setValue}/> </Protegido> ,
           }[value]
         }
         <Paper

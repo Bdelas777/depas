@@ -12,10 +12,14 @@ import AgregaImagenes from "./agregaImagenes/AgregaImagenes";
 import AgregaLocacion from "./agregaLocacion/AgregaLocacion";
 import AgregaDetalles from "./agregaDetalles/AgregaDetalles";
 import { useValue } from '../../context/ContextProvider';
+import { Send } from '@mui/icons-material';
+import { createRoom } from '../../actions/room';
 
-const AddRoom = () => {
+
+const AddRoom = ({setPage}) => {
   const {
-    state: { imagenes,detalles, locacion },
+    state: { imagenes,detalles, locacion, currentUser },
+    dispatch,
   } = useValue();
   const [activaPasos, setActivaPasos] = useState(0);
   const [pasos, setPasos] = useState([
@@ -23,6 +27,8 @@ const AddRoom = () => {
     { label: "Detalles", completed: false },
     { label: "Imagenes", completed: false },
   ]);
+
+  const [showEnvio,setShowEnvio] = useState(false);
 
   const handleNext = () => {
     if (activaPasos < pasos.length - 1) {
@@ -75,6 +81,26 @@ const AddRoom = () => {
     });
   };
   
+  useEffect(() => {
+    if (findUnfinished() === -1) {
+      if (!showEnvio) setShowEnvio(true);
+    } else {
+      if (showEnvio) setShowEnvio(false);
+    }
+  }, [pasos])
+  
+  const handleSubmit = () => {
+    const room = {
+      lng: locacion.lng,
+      lat: locacion.lat,
+      precio: detalles.precio,
+      titulo: detalles.titulo,
+      descripcion: detalles.descripcion,
+      imagenes,
+    };
+    createRoom(room, currentUser, dispatch,setPage);
+  };
+
   return (
     <Container sx={{ my: 4 }}>
       <Stepper
@@ -91,7 +117,7 @@ const AddRoom = () => {
           </Step>
         ))}
       </Stepper>
-      <Box>
+      <Box sx={{pb: 7}}>
         {
           {
             0: <AgregaLocacion />,
@@ -99,10 +125,10 @@ const AddRoom = () => {
             2: <AgregaImagenes />,
           }[activaPasos]
         }
-      </Box>
+      
       <Stack
         direction="row"
-        sx={{ pt: 2, pb: 7, justifyContent: "space-around" }}
+        sx={{ pt: 2, justifyContent: "space-around" }}
       >
         <Button
           color="inherit"
@@ -115,6 +141,20 @@ const AddRoom = () => {
           Siguiente
         </Button>
       </Stack>
+
+      {showEnvio && (
+          <Stack sx={{ alignItems: 'center' }}>
+            <Button
+              variant="contained"
+              endIcon={<Send />}
+              onClick={handleSubmit}
+            >
+              Envio
+            </Button>
+          </Stack>
+        )}
+
+      </Box>
     </Container>
   );
 };
