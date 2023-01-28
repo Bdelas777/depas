@@ -43,14 +43,17 @@ const reducer = (state, action) => {
     //Mapa
     case "ACTUALIZA_LOCACION":
       return { ...state, locacion: action.payload };
-      //Subida de datos
-      case 'RESETEA_CUARTO':
+    //Subida de datos
+    case "RESETEA_CUARTO":
       return {
         ...state,
         imagenes: [],
-        detalles: { titulo: '', descripcion: '', precio: 0 },
+        detalles: { titulo: "", descripcion: "", precio: 0 },
         locacion: { lng: 0, lat: 0 },
       };
+    case "ACTUALIZA_CUARTOS":
+      return { ...state, cuartos: action.payload };
+      
     // Opcion invalida
     default:
       throw new Error("No hubo acciones seleccionadas");

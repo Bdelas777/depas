@@ -24,3 +24,10 @@ export const createRoom = async (room, currentUser, dispatch,setPage) => {
 
   dispatch({ type: 'TERMINA_CARGAR' });
 };
+
+  export const getRooms = async (dispatch) => {
+    const result = await fetchData({ url, method: 'GET' }, dispatch);
+    if (result) {
+      dispatch({ type: 'ACTUALIZA_CUARTOS', payload: result });
+    }
+  };
