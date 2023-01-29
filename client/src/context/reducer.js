@@ -43,6 +43,7 @@ const reducer = (state, action) => {
     //Mapa
     case "ACTUALIZA_LOCACION":
       return { ...state, locacion: action.payload };
+
     //Subida de datos
     case "RESETEA_CUARTO":
       return {
@@ -51,12 +52,64 @@ const reducer = (state, action) => {
         detalles: { titulo: "", descripcion: "", precio: 0 },
         locacion: { lng: 0, lat: 0 },
       };
+
     case "ACTUALIZA_CUARTOS":
-      return { ...state, cuartos: action.payload };
-      
+      return { ...state, cuartos: action.payload,  filtroDireccion: null,
+        filtroPrecio: 12000,
+        filteredRooms: action.payload, };
+
+
+    // Sidebar
+    case 'FILTRO_PRECIO':
+      return {
+        ...state,
+        filtroPrecio: action.payload,
+        filteredRooms: applyFilter(
+          state.cuartos,
+          state.filtroDireccion,
+          action.payload
+        ),
+      };
+    case 'FILTRO_DIRECCION':
+      return {
+        ...state,
+        filtroDireccion: action.payload,
+        filteredRooms: applyFilter(
+          state.cuartos,
+          action.payload,
+          state.filtroPrecio
+        ),
+      };
+    case 'LIMPIA_DIRECCION':
+      return {
+        ...state,
+        filtroDireccion: null,
+        filtroPrecior: 12000,
+        filteredRooms: state.cuartos,
+      };
+
     // Opcion invalida
     default:
       throw new Error("No hubo acciones seleccionadas");
   }
 };
 export default reducer;
+
+
+const applyFilter = (cuartos, direccion, precio) => {
+  let filteredRooms = cuartos;
+  if (direccion) {
+    const { lng, lat } = direccion;
+    filteredRooms = filteredRooms.filter((cuarto) => {
+      const lngDifference = lng > cuarto.lng ? lng - cuarto.lng : cuarto.lng - lng;
+      const latDifference = lat > cuarto.lat ? lat - cuarto.lat : cuarto.lat - lat;
+      return lngDifference <= 1 && latDifference <= 1;
+    });
+  }
+
+  if (precio < 50) {
+    filteredRooms = filteredRooms.filter((cuarto) => cuarto.precio <= precio);
+  }
+
+  return filteredRooms;
+};

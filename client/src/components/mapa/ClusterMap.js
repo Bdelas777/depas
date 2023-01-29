@@ -5,6 +5,7 @@ import ReactMapGL, { Marker } from 'react-map-gl';
 import Supercluster from 'supercluster';
 import './cluster.css';
 import { Avatar, Paper, Tooltip } from '@mui/material';
+import GeocoderInput from '../sidebar/GeocoderInput';
 
 const supercluster = new Supercluster({
   radius: 75,
@@ -14,7 +15,7 @@ const supercluster = new Supercluster({
 
 const ClusterMap = () => {
   const {
-    state: { cuartos },
+    state: { filteredRooms },
     dispatch,
     mapaRef
   } = useValue();
@@ -29,7 +30,7 @@ const ClusterMap = () => {
   }, []);
 
   useEffect(() => {
-    const puntos = cuartos.map((cuarto) => ({
+    const puntos = filteredRooms.map((cuarto) => ({
       type: 'Feature',
       properties: {
         cluster: false,
@@ -49,7 +50,7 @@ const ClusterMap = () => {
       },
     }));
     setPuntos(puntos);
-  }, [cuartos]);
+  }, [filteredRooms]);
 
   useEffect(() => {
     supercluster.load(puntos);
@@ -119,6 +120,7 @@ const ClusterMap = () => {
           </Marker>
         );
       })}
+      <GeocoderInput />
   </ReactMapGL>
 };
 
