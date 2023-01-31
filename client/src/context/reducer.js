@@ -54,13 +54,16 @@ const reducer = (state, action) => {
       };
 
     case "ACTUALIZA_CUARTOS":
-      return { ...state, cuartos: action.payload,  filtroDireccion: null,
+      return {
+        ...state,
+        cuartos: action.payload,
+        filtroDireccion: null,
         filtroPrecio: 12000,
-        filteredRooms: action.payload, };
-
+        filteredRooms: action.payload,
+      };
 
     // Sidebar
-    case 'FILTRO_PRECIO':
+    case "FILTRO_PRECIO":
       return {
         ...state,
         filtroPrecio: action.payload,
@@ -70,7 +73,7 @@ const reducer = (state, action) => {
           action.payload
         ),
       };
-    case 'FILTRO_DIRECCION':
+    case "FILTRO_DIRECCION":
       return {
         ...state,
         filtroDireccion: action.payload,
@@ -80,13 +83,16 @@ const reducer = (state, action) => {
           state.filtroPrecio
         ),
       };
-    case 'LIMPIA_DIRECCION':
+    case "LIMPIA_DIRECCION":
       return {
         ...state,
         filtroDireccion: null,
         filtroPrecior: 12000,
         filteredRooms: state.cuartos,
       };
+
+    case "ACTUALIZA_CUARTO":
+      return { ...state, cuarto: action.payload };
 
     // Opcion invalida
     default:
@@ -95,19 +101,20 @@ const reducer = (state, action) => {
 };
 export default reducer;
 
-
 const applyFilter = (cuartos, direccion, precio) => {
   let filteredRooms = cuartos;
   if (direccion) {
     const { lng, lat } = direccion;
     filteredRooms = filteredRooms.filter((cuarto) => {
-      const lngDifference = lng > cuarto.lng ? lng - cuarto.lng : cuarto.lng - lng;
-      const latDifference = lat > cuarto.lat ? lat - cuarto.lat : cuarto.lat - lat;
+      const lngDifference =
+        lng > cuarto.lng ? lng - cuarto.lng : cuarto.lng - lng;
+      const latDifference =
+        lat > cuarto.lat ? lat - cuarto.lat : cuarto.lat - lat;
       return lngDifference <= 1 && latDifference <= 1;
     });
   }
 
-  if (precio < 50) {
+  if (precio < 12000) {
     filteredRooms = filteredRooms.filter((cuarto) => cuarto.precio <= precio);
   }
 

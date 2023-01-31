@@ -14,6 +14,7 @@ const initialState = {
   filtroPrecio: 12000,
   filtroDireccion: false,
   filteredRooms: [], // Lo puse en ingles por el nombre largo
+  cuarto: null,
 };
 
 const Context = createContext(initialState);

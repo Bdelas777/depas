@@ -20,6 +20,7 @@ export const createRoom = async (room, currentUser, dispatch,setPage) => {
     });
     dispatch({ type: 'RESETEA_CUARTO' });
     setPage(0);
+    dispatch({ type: 'ACTUALIZA_CUARTO' , payload:result});
   }
 
   dispatch({ type: 'TERMINA_CARGAR' });
