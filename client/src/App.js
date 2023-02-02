@@ -5,6 +5,8 @@ import Notificaciones from './components/Notificaciones'
 import Login from './components/usuario/Login'
 import Cargando from './components/Cargando'
 import BotonNav from './components/BotonNav'
+import Room from './components/cuartos/Room'
+
 function App() {
   return (
     <>
@@ -13,6 +15,7 @@ function App() {
     <Login />
     <NavBar />
     <BotonNav />
+    <Room />
     </>
   )
 }
