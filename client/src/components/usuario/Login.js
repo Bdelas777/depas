@@ -114,7 +114,7 @@ const Login = () => {
         </DialogContent>
         <DialogActions sx={{ px: "19px" }}>
           <Button type="submit" variant="contained" endIcon={<Send />}>
-            Enviar
+            Aceptar
           </Button>
         </DialogActions>
       </form>
