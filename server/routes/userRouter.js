@@ -1,10 +1,16 @@
-import { Router } from 'express';
-import { login, register, updateProfile } from '../controllers/user.js';
-import auth from '../middleware/auth.js';
+import { Router } from "express";
+import {
+  login,
+  register,
+  updateProfile,
+  getUsers,
+} from "../controllers/user.js";
+import auth from "../middleware/auth.js";
 
 const userRouter = Router();
-userRouter.post('/register', register);
-userRouter.post('/login', login);
-userRouter.patch('/updateProfile',auth,updateProfile)
+userRouter.post("/register", register);
+userRouter.post("/login", login);
+userRouter.patch("/updateProfile", auth, updateProfile);
+userRouter.get("/", getUsers);
 
 export default userRouter;
