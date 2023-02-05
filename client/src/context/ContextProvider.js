@@ -15,6 +15,7 @@ const initialState = {
   filtroDireccion: false,
   filteredRooms: [], // Lo puse en ingles por el nombre largo
   cuarto: null,
+  usuarios: []
 };
 
 const Context = createContext(initialState);

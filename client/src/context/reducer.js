@@ -73,6 +73,7 @@ const reducer = (state, action) => {
           action.payload
         ),
       };
+
     case "FILTRO_DIRECCION":
       return {
         ...state,
@@ -83,6 +84,7 @@ const reducer = (state, action) => {
           state.filtroPrecio
         ),
       };
+
     case "LIMPIA_DIRECCION":
       return {
         ...state,
@@ -93,6 +95,10 @@ const reducer = (state, action) => {
 
     case "ACTUALIZA_CUARTO":
       return { ...state, cuarto: action.payload };
+
+    // Update user
+    case "ACTUALIZA_USUARIOS":
+      return { ...state, usuarios: action.payload };
 
     // Opcion invalida
     default:
