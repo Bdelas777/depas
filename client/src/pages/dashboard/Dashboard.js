@@ -1,4 +1,4 @@
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import {
   Box,
   Toolbar,
@@ -6,27 +6,27 @@ import {
   Typography,
   IconButton,
   Tooltip,
-} from '@mui/material';
-import MuiAppBar from '@mui/material/AppBar';
-import { Brightness4, Brightness7, Home, Menu } from '@mui/icons-material';
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SideList from './SideList';
+} from "@mui/material";
+import MuiAppBar from "@mui/material/AppBar";
+import { Brightness4, Brightness7, Home, Menu } from "@mui/icons-material";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import SideList from "./SideList";
 
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -41,7 +41,7 @@ export default function Dashboard() {
     () =>
       createTheme({
         palette: {
-          mode: dark ? 'dark' : 'light',
+          mode: dark ? "dark" : "light",
         },
       }),
     [dark]
@@ -54,7 +54,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
@@ -65,13 +65,13 @@ export default function Dashboard() {
               edge="start"
               sx={{
                 marginRight: 5,
-                ...(open && { display: 'none' }),
+                ...(open && { display: "none" }),
               }}
             >
               <Menu />
             </IconButton>
             <Tooltip title="Go back to home page">
-              <IconButton sx={{ mr: 1 }} onClick={() => navigate('/')}>
+              <IconButton sx={{ mr: 1 }} onClick={() => navigate("/")}>
                 <Home />
               </IconButton>
             </Tooltip>
@@ -81,7 +81,7 @@ export default function Dashboard() {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Panel
             </Typography>
             <IconButton onClick={() => setDark(!dark)}>
               {dark ? <Brightness7 /> : <Brightness4 />}
