@@ -100,6 +100,15 @@ const reducer = (state, action) => {
     case "ACTUALIZA_USUARIOS":
       return { ...state, usuarios: action.payload };
 
+    // Elimina cuarto
+    case "ELIMINA_CUARTO":
+      return {
+        ...state,
+        cuartos: state.cuartos.filter(
+          (cuarto) => cuarto._id !== action.payload
+        ),
+      };
+
     // Opcion invalida
     default:
       throw new Error("No hubo acciones seleccionadas");

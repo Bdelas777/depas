@@ -101,3 +101,14 @@ export const getUsers = async (dispatch) => {
     dispatch({ type: "ACTUALIZA_USUARIOS", payload: result });
   }
 };
+
+export const updateStatus = (updatedFields, userId, dispatch) => {
+  return fetchData(
+    {
+      url: `${url}/updateStatus/${userId}`,
+      method: "PATCH",
+      body: updatedFields,
+    },
+    dispatch
+  );
+};

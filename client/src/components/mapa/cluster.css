@@ -30,6 +30,7 @@
 .swiper {
   z-index: unset !important;
 }
+
 .swiper-pagination {
   text-align: right !important;
   left: unset !important;
