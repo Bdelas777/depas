@@ -30,6 +30,18 @@ const reducer = (state, action) => {
     case "ACTUALIZA_IMAGENES":
       return { ...state, imagenes: [...state.imagenes, ...action.payload] };
 
+    case "ACTUALIZA_IMAGENES_BORRADAS":
+      return {
+        ...state,
+        deletedImages: [...state.deletedImages, ...action.payload],
+      };
+
+    case "ACTUALIZA_IMAGENES_AGREGADAS":
+      return {
+        ...state,
+        addedImages: [...state.addedImages, ...action.payload],
+      };
+
     case "BORRA_IMAGENES":
       return {
         ...state,
@@ -52,6 +64,8 @@ const reducer = (state, action) => {
         detalles: { titulo: "", descripcion: "", precio: 0 },
         locacion: { lng: 0, lat: 0 },
         actualizadoCuarto: null,
+        deletedImages: [],
+        addedImages: [],
       };
 
     case "ACTUALIZA_CUARTOS":

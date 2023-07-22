@@ -1,23 +1,28 @@
-import { Cancel } from '@mui/icons-material';
+import { Cancel } from "@mui/icons-material";
 import {
   IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
-} from '@mui/material';
-import React from 'react';
-import { useValue } from '../../../context/ContextProvider';
-import deleteFile from '../../../firebase/deleteFile';
+} from "@mui/material";
+import React from "react";
+import { useValue } from "../../../context/ContextProvider";
+import deleteFile from "../../../firebase/deleteFile";
 
 const ImagesList = () => {
   const {
-    state: { imagenes, currentUser },
+    state: { imagenes, currentUser, updatedRoom },
     dispatch,
   } = useValue();
 
   const handleDelete = async (image) => {
-    dispatch({ type: 'BORRA_IMAGENES', payload: image });
-    const imageName = image?.split(`${currentUser?.id}%2F`)[1]?.split('?')[0];
+    dispatch({ type: "BORRA_IMAGENES", payload: image });
+    if (updatedRoom)
+      return dispatch({
+        type: "ACTUALIZA_IMAGENES_BORRADAS",
+        payload: [image],
+      });
+    const imageName = image?.split(`${currentUser?.id}%2F`)[1]?.split("?")[0];
     try {
       await deleteFile(`rooms/${currentUser?.id}/${imageName}`);
     } catch (error) {
@@ -28,9 +33,9 @@ const ImagesList = () => {
     <ImageList
       rowHeight={250}
       sx={{
-        '&.MuiImageList-root': {
+        "&.MuiImageList-root": {
           gridTemplateColumns:
-            'repeat(auto-fill, minmax(250px, 1fr))!important',
+            "repeat(auto-fill, minmax(250px, 1fr))!important",
         },
       }}
     >
@@ -40,17 +45,17 @@ const ImagesList = () => {
             src={image}
             alt="rooms"
             loading="lazy"
-            style={{ height: '100%' }}
+            style={{ height: "100%" }}
           />
           <ImageListItemBar
             position="top"
             sx={{
               background:
-                'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)',
+                "linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)",
             }}
             actionIcon={
               <IconButton
-                sx={{ color: 'white' }}
+                sx={{ color: "white" }}
                 onClick={() => handleDelete(image)}
               >
                 <Cancel />

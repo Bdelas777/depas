@@ -21,7 +21,7 @@ const ProgressItem = ({ archivo }) => {
   const [progress, setProgress] = useState(0);
   const [imageURL, setImageURL] = useState(null);
   const {
-    state: { currentUser },
+    state: { currentUser, updatedRoom },
     dispatch,
   } = useValue();
   useEffect(() => {
@@ -30,12 +30,14 @@ const ProgressItem = ({ archivo }) => {
       try {
         const url = await uploadFileProgress(
           archivo,
-          `rooms/${currentUser?.id}`,
+          `rooms/${updatedRoom ? updatedRoom.uid : currentUser?.id}`,
           imageName,
           setProgress
         );
 
         dispatch({ type: "ACTUALIZA_IMAGENES", payload: [url] });
+        if (updatedRoom)
+          dispatch({ type: "ACTUALIZA_IMAGENES_AGREGADAS", payload: [url] });
         setImageURL(null);
       } catch (error) {
         dispatch({

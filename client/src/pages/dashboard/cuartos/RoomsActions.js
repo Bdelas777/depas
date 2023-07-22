@@ -1,7 +1,7 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit, Preview } from "@mui/icons-material";
 import { useValue } from "../../../context/ContextProvider";
-import { deleteRoom } from "../../../actions/room";
+import { clearRoom, deleteRoom } from "../../../actions/room";
 import { useNavigate } from "react-router-dom";
 
 const RoomsActions = ({ params }) => {
@@ -10,9 +10,15 @@ const RoomsActions = ({ params }) => {
     params.row;
   const {
     dispatch,
-    state: { currentUser },
+    state: { currentUser, updatedRoom, addedImages, imagenes: newImages },
   } = useValue();
+
   const handleEdit = () => {
+    if (updatedRoom) {
+      clearRoom(dispatch, currentUser, addedImages, updatedRoom);
+    } else {
+      clearRoom(dispatch, currentUser, newImages);
+    }
     dispatch({ type: "ACTUALIZA_LOCACION", payload: { lng, lat } });
     dispatch({
       type: "ACTUALIZA_DETALLES",

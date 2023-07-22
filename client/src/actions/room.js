@@ -19,7 +19,7 @@ export const createRoom = async (room, currentUser, dispatch) => {
         message: "El cuarto ha sido agregado, exitosamente",
       },
     });
-    dispatch({ type: "RESETEA_CUARTO" });
+    clearRoom(dispatch, currentUser);
     dispatch({ type: "ACTUALIZADO_SECCION", payload: 0 });
     dispatch({ type: "ACTUALIZA_CUARTO", payload: result });
   }
@@ -56,4 +56,55 @@ export const deleteRoom = async (room, currentUser, dispatch) => {
   }
 
   dispatch({ type: "TERMINA_CARGAR" });
+};
+
+export const updateRoom = async (
+  room,
+  currentUser,
+  dispatch,
+  updatedRoom,
+  deletedImages
+) => {
+  dispatch({ type: "INICIA_CARGAR" });
+
+  const result = await fetchData(
+    {
+      url: `${url}/${updatedRoom._id}`,
+      method: "PATCH",
+      body: room,
+      token: currentUser?.token,
+    },
+    dispatch
+  );
+  if (result) {
+    dispatch({
+      type: "ACTUALIZA_ALERTA",
+      payload: {
+        open: true,
+        severity: "success",
+        message: "El cuarto sea actualizado exitosamente",
+      },
+    });
+
+    clearRoom(dispatch, currentUser, deletedImages, updatedRoom);
+    dispatch({ type: "ACTUALIZADO_SECCION", payload: 0 });
+    dispatch({ type: "ACTUALIZA_CUARTO", payload: result });
+  }
+
+  dispatch({ type: "TERMINA_CARGAR" });
+};
+
+export const clearRoom = (
+  dispatch,
+  currentUser,
+  imagenes = [],
+  updatedRoom = null
+) => {
+  dispatch({ type: "RESETEA_CUARTO" });
+  // remove from localStorage
+  if (updatedRoom) {
+    deleteImages(imagenes, updatedRoom.uid);
+  } else {
+    deleteImages(imagenes, currentUser.id);
+  }
 };
