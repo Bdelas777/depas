@@ -12,6 +12,7 @@ const AgregaLocacion = () => {
   const {
     state: {
       locacion: { lng, lat },
+      currentUser,
     },
     dispatch,
   } = useValue();
@@ -19,22 +20,31 @@ const AgregaLocacion = () => {
   const mapaRef = useRef();
 
   useEffect(() => {
-    if (!lng && !lat) {
-      fetch('https://ipapi.co/json')
+    const storedLocation = JSON.parse(
+      localStorage.getItem(currentUser.id)
+    )?.locacion;
+
+    if (!lng && !lat && !storedLocation?.lng && !storedLocation?.lat) {
+      fetch("https://ipapi.co/json")
         .then((response) => {
           return response.json();
         })
         .then((data) => {
-          mapaRef.current.flyTo({
-            center: [data.longitude, data.latitude],
-          });
           dispatch({
-            type: 'ACTUALIZA_LOCACION',
+            type: "ACTUALIZA_LOCACION",
             payload: { lng: data.longitude, lat: data.latitude },
           });
         });
     }
   }, []);
+
+  useEffect(() => {
+    if ((lng || lat) && mapaRef.current) {
+      mapaRef.current.flyTo({
+        center: [lng, lat],
+      });
+    }
+  }, [lng, lat]);
 
   return (
     <Box
@@ -44,7 +54,7 @@ const AgregaLocacion = () => {
       }}
     >
       <ReactMapGL
-      ref={mapaRef}
+        ref={mapaRef}
         mapboxAccessToken={process.env.REACT_APP_MAP_TOKEN}
         initialViewState={{
           longitude: lng,
@@ -70,7 +80,7 @@ const AgregaLocacion = () => {
           trackUserLocation
           onGeolocate={(e) =>
             dispatch({
-              type: 'ACTUALIZA_LOCACION',
+              type: "ACTUALIZA_LOCACION",
               payload: { lng: e.coords.longitude, lat: e.coords.latitude },
             })
           }

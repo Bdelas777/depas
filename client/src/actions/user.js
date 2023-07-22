@@ -112,3 +112,8 @@ export const updateStatus = (updatedFields, userId, dispatch) => {
     dispatch
   );
 };
+
+export const logout = (dispatch) => {
+  dispatch({ type: "USUARIO_ACTUALIZADO", payload: null });
+  dispatch({ type: "RESETEA_CUARTO" });
+};

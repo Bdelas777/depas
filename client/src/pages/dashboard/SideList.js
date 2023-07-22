@@ -6,7 +6,7 @@ import {
   MarkChatUnread,
   NotificationsActive,
   PeopleAlt,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -20,105 +20,115 @@ import {
   styled,
   Tooltip,
   Typography,
-} from '@mui/material';
-import MuiDrawer from '@mui/material/Drawer';
-import { useMemo, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { useValue } from '../../context/ContextProvider';
-import Main from './main/Main';
-import Mensajes from './mensajes/Mensajes';
-import Requests from './requests/Requests';
-import Cuartos from './cuartos/Cuartos';
-import Usuarios from './usuarios/Usuarios';
+} from "@mui/material";
+import MuiDrawer from "@mui/material/Drawer";
+import { useMemo, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useValue } from "../../context/ContextProvider";
+import Main from "./main/Main";
+import Mensajes from "./mensajes/Mensajes";
+import Requests from "./requests/Requests";
+import Cuartos from "./cuartos/Cuartos";
+import Usuarios from "./usuarios/Usuarios";
+import { storeRoom } from "../../actions/room";
+import { logout } from "../../actions/user";
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   width: drawerWidth,
   flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
   ...(open && {
     ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
   ...(!open && {
     ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
 
 const SideList = ({ open, setOpen }) => {
   const {
-    state: { currentUser },
+    state: {
+      currentUser,
+      locacion,
+      detalles,
+      imagenes,
+      updatedRoom,
+      deletedImages,
+      addedImages,
+    },
     dispatch,
   } = useValue();
 
-  const [selectedLink, setSelectedLink] = useState('');
+  const [selectedLink, setSelectedLink] = useState("");
 
   const list = useMemo(
     () => [
       {
-        title: 'Main',
+        title: "Main",
         icon: <Dashboard />,
-        link: '',
-        component: <Main {...{ setSelectedLink, link: '' }} />,
+        link: "",
+        component: <Main {...{ setSelectedLink, link: "" }} />,
       },
       {
-        title: 'Usuarios',
+        title: "Usuarios",
         icon: <PeopleAlt />,
-        link: 'usuarios',
-        component: <Usuarios {...{ setSelectedLink, link: 'usuarios' }} />,
+        link: "usuarios",
+        component: <Usuarios {...{ setSelectedLink, link: "usuarios" }} />,
       },
       {
-        title: 'Cuartos',
+        title: "Cuartos",
         icon: <KingBed />,
-        link: 'cuartos',
-        component: <Cuartos {...{ setSelectedLink, link: 'cuartos' }} />,
+        link: "cuartos",
+        component: <Cuartos {...{ setSelectedLink, link: "cuartos" }} />,
       },
       {
-        title: 'Requests',
+        title: "Requests",
         icon: <NotificationsActive />,
-        link: 'requests',
-        component: <Requests {...{ setSelectedLink, link: 'requests' }} />,
+        link: "requests",
+        component: <Requests {...{ setSelectedLink, link: "requests" }} />,
       },
       {
-        title: 'Mensajes',
+        title: "Mensajes",
         icon: <MarkChatUnread />,
-        link: 'mensajes',
-        component: <Mensajes {...{ setSelectedLink, link: 'mensajes' }} />,
+        link: "mensajes",
+        component: <Mensajes {...{ setSelectedLink, link: "mensajes" }} />,
       },
     ],
     []
@@ -127,8 +137,17 @@ const SideList = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch({ type: 'USUARIO_ACTUALIZADO', payload: null });
-    navigate('/');
+    storeRoom(
+      locacion,
+      detalles,
+      imagenes,
+      updatedRoom,
+      deletedImages,
+      addedImages,
+      currentUser.id
+    );
+    logout(dispatch);
+    navigate("/");
   };
   return (
     <>
@@ -141,11 +160,11 @@ const SideList = ({ open, setOpen }) => {
         <Divider />
         <List>
           {list.map((item) => (
-            <ListItem key={item.title} disablePadding sx={{ display: 'block' }}>
+            <ListItem key={item.title} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
+                  justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
                 onClick={() => navigate(item.link)}
@@ -154,8 +173,8 @@ const SideList = ({ open, setOpen }) => {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
                   }}
                 >
                   {item.icon}
@@ -169,17 +188,17 @@ const SideList = ({ open, setOpen }) => {
           ))}
         </List>
         <Divider />
-        <Box sx={{ mx: 'auto', mt: 3, mb: 1 }}>
-          <Tooltip title={currentUser?.name || ''}>
+        <Box sx={{ mx: "auto", mt: 3, mb: 1 }}>
+          <Tooltip title={currentUser?.name || ""}>
             <Avatar
               src={currentUser?.photoURL}
               {...(open && { sx: { width: 100, height: 100 } })}
             />
           </Tooltip>
         </Box>
-        <Box sx={{ textAlign: 'center' }}>
+        <Box sx={{ textAlign: "center" }}>
           {open && <Typography>{currentUser?.name}</Typography>}
-          <Typography variant="body2">{currentUser?.role || 'role'}</Typography>
+          <Typography variant="body2">{currentUser?.role || "role"}</Typography>
           {open && (
             <Typography variant="body2">{currentUser?.email}</Typography>
           )}

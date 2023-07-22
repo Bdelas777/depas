@@ -108,3 +108,37 @@ export const clearRoom = (
     deleteImages(imagenes, currentUser.id);
   }
 };
+
+export const storeRoom = (
+  locacion,
+  detalles,
+  imagenes,
+  updatedRoom,
+  deletedImages,
+  addedImages,
+  userId
+) => {
+  if (
+    locacion.lng ||
+    locacion.lat ||
+    detalles.precio ||
+    detalles.titulo ||
+    detalles.descripcion ||
+    imagenes.length
+  ) {
+    localStorage.setItem(
+      userId,
+      JSON.stringify({
+        locacion,
+        detalles,
+        imagenes,
+        updatedRoom,
+        deletedImages,
+        addedImages,
+      })
+    );
+    return true;
+  } else {
+    return false;
+  }
+};

@@ -52,6 +52,7 @@ export default function Dashboard() {
   };
 
   const navigate = useNavigate();
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ display: "flex" }}>
