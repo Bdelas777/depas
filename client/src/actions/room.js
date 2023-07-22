@@ -3,7 +3,7 @@ import fetchData from "./utils/fetchData";
 
 const url = process.env.REACT_APP_SERVER_URL + "/room";
 
-export const createRoom = async (room, currentUser, dispatch, setPage) => {
+export const createRoom = async (room, currentUser, dispatch) => {
   dispatch({ type: "INICIA_CARGAR" });
 
   const result = await fetchData(
@@ -20,7 +20,7 @@ export const createRoom = async (room, currentUser, dispatch, setPage) => {
       },
     });
     dispatch({ type: "RESETEA_CUARTO" });
-    setPage(0);
+    dispatch({ type: "ACTUALIZADO_SECCION", payload: 0 });
     dispatch({ type: "ACTUALIZA_CUARTO", payload: result });
   }
 
@@ -52,7 +52,7 @@ export const deleteRoom = async (room, currentUser, dispatch) => {
     });
 
     dispatch({ type: "ELIMINA_CUARTO", payload: result._id });
-    deleteImages(room.images, currentUser.id);
+    deleteImages(room.images, room.uid);
   }
 
   dispatch({ type: "TERMINA_CARGAR" });
