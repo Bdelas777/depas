@@ -1,23 +1,67 @@
 import { Dashboard, Logout, Settings } from "@mui/icons-material";
 import { ListItemIcon, Menu, MenuItem } from "@mui/material";
-import React from "react";
+import { React, useEffect } from "react";
 import { useValue } from "../../context/ContextProvider";
 import useCheckToken from "../../hooks/useCheckToken";
-
+import { logout } from "../../actions/user";
 import Perfil from "./Perfil";
 import { useNavigate } from "react-router-dom";
+import { storeRoom } from "../../actions/room";
 
 const UsuarioMenu = ({ anchorUsuarioMenu, setAnchorUsuarioMenu }) => {
   useCheckToken();
   const {
     dispatch,
-    state: { currentUser },
+    state: {
+      currentUser,
+      locacion,
+      detalles,
+      imagenes,
+      updatedRoom,
+      deletedImages,
+      addedImages,
+    },
   } = useValue();
   const handleCloseUsuarioMenu = () => {
     setAnchorUsuarioMenu(null);
   };
 
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    storeRoom(
+      locacion,
+      detalles,
+      imagenes,
+      updatedRoom,
+      deletedImages,
+      addedImages,
+      currentUser.id
+    );
+    logout(dispatch);
+  };
+
+  useEffect(() => {
+    const storeBeforeLeave = (e) => {
+      if (
+        storeRoom(
+          locacion,
+          detalles,
+          imagenes,
+          updatedRoom,
+          deletedImages,
+          addedImages,
+          currentUser.id
+        )
+      ) {
+        e.preventDefault();
+        e.returnValue = true;
+      }
+    };
+
+    window.addEventListener("beforeunload", storeBeforeLeave);
+    return () => window.removeEventListener("beforeunload", storeBeforeLeave);
+  }, [locacion, detalles, imagenes]);
 
   return (
     <>
@@ -54,11 +98,7 @@ const UsuarioMenu = ({ anchorUsuarioMenu, setAnchorUsuarioMenu }) => {
           Panel
         </MenuItem>
 
-        <MenuItem
-          onClick={() =>
-            dispatch({ type: "USUARIO_ACTUALIZADO", payload: null })
-          }
-        >
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

@@ -1,11 +1,10 @@
-import { Google } from '@mui/icons-material';
-import { Button } from '@mui/material';
-import { React,  useState } from 'react';
-import { useValue } from '../../context/ContextProvider';
-import jwtDecode from 'jwt-decode';
+import { Google } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import { React, useState } from "react";
+import { useValue } from "../../context/ContextProvider";
+import jwtDecode from "jwt-decode";
 // Para usar google es esencial este paquete
 const GoogleLogin = () => {
-
   const { dispatch } = useValue();
   const [disabled, setDisabled] = useState(false);
 
@@ -14,12 +13,20 @@ const GoogleLogin = () => {
     const decodedToken = jwtDecode(token);
     const { sub: id, email, name, picture: photoURL } = decodedToken;
     dispatch({
-      type: 'USUARIO_ACTUALIZADO',
-      payload: { id, email, name, photoURL, token, google: true },
+      type: "USUARIO_ACTUALIZADO",
+      payload: {
+        id,
+        email,
+        name,
+        photoURL,
+        token,
+        google: true,
+        role: "basic",
+      },
     });
-    dispatch({ type: 'CERRAR_INICIAR_SESION' });
+    dispatch({ type: "CERRAR_INICIAR_SESION" });
   };
-  
+
   const handleGoogleLogin = () => {
     setDisabled(true);
     try {
@@ -29,7 +36,7 @@ const GoogleLogin = () => {
       });
       window.google.accounts.id.prompt((notification) => {
         if (notification.isNotDisplayed()) {
-          throw new Error('Limpia las cookies o intenta despues!');
+          throw new Error("Limpia las cookies o intenta despues!");
         }
         if (
           notification.isSkippedMoment() ||
@@ -40,16 +47,20 @@ const GoogleLogin = () => {
       });
     } catch (error) {
       dispatch({
-        type: 'ACTUALIZA_ALERTA',
-        payload: { open: true, severity: 'error', message: error.message },
+        type: "ACTUALIZA_ALERTA",
+        payload: { open: true, severity: "error", message: error.message },
       });
       console.log(error);
     }
   };
 
   return (
-    <Button variant="outlined" startIcon={<Google />}  disabled={disabled}
-    onClick={handleGoogleLogin}>
+    <Button
+      variant="outlined"
+      startIcon={<Google />}
+      disabled={disabled}
+      onClick={handleGoogleLogin}
+    >
       Iniciar sesion con Google
     </Button>
   );

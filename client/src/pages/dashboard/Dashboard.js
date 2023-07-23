@@ -12,6 +12,8 @@ import { Brightness4, Brightness7, Home, Menu } from "@mui/icons-material";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SideList from "./SideList";
+import Protegido from "../../components/protegido/Protegido";
+import Login from "../../components/usuario/Login";
 
 const drawerWidth = 240;
 
@@ -52,6 +54,7 @@ export default function Dashboard() {
   };
 
   const navigate = useNavigate();
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ display: "flex" }}>
@@ -88,8 +91,11 @@ export default function Dashboard() {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <SideList {...{ open, setOpen }} />
+        <Protegido>
+          <SideList {...{ open, setOpen }} />
+        </Protegido>
       </Box>
+      <Login />
     </ThemeProvider>
   );
 }
