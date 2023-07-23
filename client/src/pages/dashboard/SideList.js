@@ -32,6 +32,8 @@ import Cuartos from "./cuartos/Cuartos";
 import Usuarios from "./usuarios/Usuarios";
 import { storeRoom } from "../../actions/room";
 import { logout } from "../../actions/user";
+import useCheckToken from "../../hooks/useCheckToken";
+import isAdmin from "./utils/isAdmin";
 
 const drawerWidth = 240;
 
@@ -83,6 +85,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideList = ({ open, setOpen }) => {
+  useCheckToken();
   const {
     state: {
       currentUser,
@@ -100,18 +103,25 @@ const SideList = ({ open, setOpen }) => {
 
   const list = useMemo(
     () => [
-      {
-        title: "Main",
-        icon: <Dashboard />,
-        link: "",
-        component: <Main {...{ setSelectedLink, link: "" }} />,
-      },
-      {
-        title: "Usuarios",
-        icon: <PeopleAlt />,
-        link: "usuarios",
-        component: <Usuarios {...{ setSelectedLink, link: "usuarios" }} />,
-      },
+      ...(isAdmin(currentUser)
+        ? [
+            {
+              title: "Main",
+              icon: <Dashboard />,
+              link: "",
+              component: <Main {...{ setSelectedLink, link: "" }} />,
+            },
+            {
+              title: "Usuarios",
+              icon: <PeopleAlt />,
+              link: "usuarios",
+              component: (
+                <Usuarios {...{ setSelectedLink, link: "usuarios" }} />
+              ),
+            },
+          ]
+        : []),
+
       {
         title: "Cuartos",
         icon: <KingBed />,
@@ -147,7 +157,6 @@ const SideList = ({ open, setOpen }) => {
       currentUser.id
     );
     logout(dispatch);
-    navigate("/");
   };
   return (
     <>
@@ -215,6 +224,16 @@ const SideList = ({ open, setOpen }) => {
           {list.map((item) => (
             <Route key={item.title} path={item.link} element={item.component} />
           ))}
+          <Route
+            path="*"
+            element={
+              isAdmin(currentUser) ? (
+                <Main {...{ setSelectedLink, link: "" }} />
+              ) : (
+                <Cuartos {...{ setSelectedLink, link: "cuartos" }} />
+              )
+            }
+          />
         </Routes>
       </Box>
     </>

@@ -20,13 +20,13 @@ import CuartosUsuarios from "./CuartosUsuarios";
 
 const Main = ({ setSelectedLink, link }) => {
   const {
-    state: { cuartos, usuarios },
+    state: { cuartos, usuarios, currentUser },
     dispatch,
   } = useValue();
   useEffect(() => {
     setSelectedLink(link);
     if (cuartos.length === 0) getRooms(dispatch);
-    if (usuarios.length === 0) getUsers(dispatch);
+    if (usuarios.length === 0) getUsers(dispatch, currentUser);
   }, []);
   return (
     <Box

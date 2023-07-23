@@ -6,10 +6,11 @@ import { getRooms } from "../../../actions/room";
 import moment from "moment";
 import { grey } from "@mui/material/colors";
 import RoomsActions from "./RoomsActions";
+import isAdmin from "../utils/isAdmin";
 
 const Cuartos = ({ setSelectedLink, link }) => {
   const {
-    state: { cuartos },
+    state: { cuartos, currentUser },
     dispatch,
   } = useValue();
 
@@ -88,7 +89,11 @@ const Cuartos = ({ setSelectedLink, link }) => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={cuartos}
+        rows={
+          isAdmin(currentUser)
+            ? cuartos
+            : cuartos.filter((room) => room.uid === currentUser.id)
+        }
         getRowId={(row) => row._id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
